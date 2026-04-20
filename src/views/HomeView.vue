@@ -1,7 +1,6 @@
 <template>
   <section class="home">
     <h2>Trang chủ</h2>
-    <p>Đây là ứng dụng Todo App dùng để học Vue cơ bản.</p>
     <RouterLink to="/tasks">Đi tới danh sách công việc</RouterLink>
   </section>
 </template>
