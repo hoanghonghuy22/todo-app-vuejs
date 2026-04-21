@@ -6,8 +6,8 @@
       <h1>Todo App</h1>
 
       <nav class="app-nav">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/tasks">Tasks</RouterLink>
+        <RouterLink :to="{ name: 'home' }">Home</RouterLink>
+        <RouterLink :to="{ name: 'tasks' }">Tasks</RouterLink>
       </nav>
     </header>
 

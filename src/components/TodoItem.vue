@@ -23,7 +23,7 @@ function handleDelete() {
     <p>Trạng thái: {{ todo.completed ? 'Đã xong' : 'Chưa xong' }}</p>
 
     <div class="task-item__actions">
-      <RouterLink :to="`/tasks/${todo.id}`">Xem chi tiết</RouterLink>
+      <RouterLink :to="{ name: 'task-details', params: { id: todo.id } }">Xem chi tiết</RouterLink>
       <button type="button" class="delete-btn" @click="handleDelete">Xóa</button>
     </div>
   </li>

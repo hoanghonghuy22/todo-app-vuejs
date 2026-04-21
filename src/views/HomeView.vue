@@ -1,7 +1,7 @@
 <template>
   <section class="home">
     <h2>Trang chủ</h2>
-    <RouterLink to="/tasks">Đi tới danh sách công việc</RouterLink>
+    <RouterLink :to="{ name: 'tasks' }">Đi tới danh sách công việc</RouterLink>
   </section>
 </template>
 

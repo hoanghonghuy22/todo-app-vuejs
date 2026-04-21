@@ -23,7 +23,7 @@ watch(
 <template>
   <section class="task-detail">
     <div class="task-detail__header">
-      <RouterLink to="/tasks" class="back-link">← Quay lại</RouterLink>
+      <RouterLink :to="{ name: 'tasks' }" class="back-link">← Quay lại</RouterLink>
     </div>
 
     <div v-if="todo">
