@@ -50,4 +50,14 @@
 .app-main {
   padding: 16px 0;
 }
+
+@media (max-width: 600px) {
+  .app-header {
+    margin-bottom: 16px;
+  }
+
+  .app-main {
+    padding: 12px 0;
+  }
+}
 </style>

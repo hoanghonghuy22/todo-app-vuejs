@@ -1,91 +1,128 @@
 <script setup>
 import { ref } from 'vue'
+import TodoItem from './TodoItem.vue'
+import TodoForm from './TodoForm.vue'
 
-const emit = defineEmits(['add-todo'])
+defineProps({
+  todos: {
+    type: Array,
+    required: true,
+  },
+})
 
-const title = ref('')
-const description = ref('')
+const emit = defineEmits(['add-todo', 'delete-todo'])
 
-function handleSubmit() {
-  if (!title.value.trim() || !description.value.trim()) {
-    return
-  }
+// state
+const showModal = ref(false)
 
-  emit('add-todo', {
-    id: crypto.randomUUID(),
-    title: title.value,
-    description: description.value,
-    completed: false
-  })
+function openAddModal() {
+  showModal.value = true
+}
 
-  title.value = ''
-  description.value = ''
+function closeAddModal() {
+  showModal.value = false
+}
+
+function handleAddFromForm(newTodo) {
+  emit('add-todo', newTodo)
+  closeAddModal()
+}
+
+function handleDeleteTodo(id) {
+  emit('delete-todo', id)
 }
 </script>
 
 <template>
-  <form class="todo-form" @submit.prevent="handleSubmit">
-    <div class="form-group">
-      <label for="title">Tiêu đề</label>
-      <input
-        id="title"
-        v-model="title"
-        type="text"
-        placeholder="Nhập tiêu đề công việc"
-      />
+  <section class="todo-list">
+    <div class="todo-list__controls">
+      <button class="add-btn" v-on:click="openAddModal">Thêm công việc</button>
     </div>
 
-    <div class="form-group">
-      <label for="description">Mô tả</label>
-      <textarea
-        id="description"
-        v-model="description"
-        placeholder="Nhập mô tả công việc"
-      ></textarea>
-    </div>
+    <h3>Danh sách nhiệm vụ</h3>
 
-    <button type="submit">Thêm công việc</button>
-  </form>
+    <ul v-if="todos && todos.length">
+      <TodoItem v-for="todo in todos" v-bind:key="todo.id" v-bind:todo="todo" v-on:delete-todo="handleDeleteTodo" />
+    </ul>
+
+    <p v-else class="empty">Chưa có công việc nào.</p>
+
+    <!-- Modal -->
+    <div v-if="showModal" class="modal-backdrop" v-on:click.self="closeAddModal">
+      <div class="modal">
+        <button class="modal-close" v-on:click="closeAddModal">✕</button>
+        <TodoForm v-on:add-todo="handleAddFromForm" />
+      </div>
+    </div>
+  </section>
 </template>
 
 <style scoped>
-.todo-form {
-  margin: 16px 0 24px;
-  padding: 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+.todo-list {
+  margin-top: 24px;
 }
 
-.form-group {
-  margin-bottom: 16px;
+.todo-list__controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
+.add-btn {
+  background-color: #42b883;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
   font-weight: 600;
 }
 
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font: inherit;
+.add-btn:hover {
+  opacity: 0.95;
 }
 
-.form-group textarea {
-  min-height: 100px;
-  resize: vertical;
+.todo-list h3 {
+  margin-bottom: 12px;
 }
 
-button {
-  background-color: #42b883;
-  color: white;
+.todo-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.empty {
+  color: #666;
+}
+
+/* Modal styles */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 16px;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: transparent;
   border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
+  font-size: 18px;
   cursor: pointer;
 }
 </style>

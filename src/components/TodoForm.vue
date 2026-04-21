@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 
+// khoi tao 
 const emit = defineEmits(['add-todo'])
 
 const title = ref('')
@@ -10,12 +11,12 @@ function handleSubmit() {
   if (!title.value.trim() || !description.value.trim()) {
     return
   }
-
+  // them item moi vao emit
   emit('add-todo', {
     id: crypto.randomUUID(),
     title: title.value,
     description: description.value,
-    completed: false
+    completed: false,
   })
 
   title.value = ''
@@ -24,15 +25,10 @@ function handleSubmit() {
 </script>
 
 <template>
-  <form class="todo-form" @submit.prevent="handleSubmit">
+  <form class="todo-form" v-on:submit.prevent="handleSubmit">
     <div class="form-group">
       <label for="title">Tiêu đề</label>
-      <input 
-        id="title"
-        v-model="title"
-        type="text"
-        placeholder="Nhập tiêu đề công việc"
-      />
+      <input id="title" v-model="title" type="text" placeholder="Nhập tiêu đề công việc" />
     </div>
 
     <div class="form-group">
